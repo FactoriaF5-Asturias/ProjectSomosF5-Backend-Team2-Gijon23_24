@@ -36,5 +36,5 @@ public class Product {
     private String productImage;
 
     @Column
-    private int price;
+    private Long price;
 }
