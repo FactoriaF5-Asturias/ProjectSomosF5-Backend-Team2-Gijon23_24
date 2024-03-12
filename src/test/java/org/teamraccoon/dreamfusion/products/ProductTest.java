@@ -39,7 +39,7 @@ public class ProductTest {
     void testProductHaveIdProductnamePasswordProfile() {
         assertThat(product.getId(), is(1L));
         assertThat(product.getProductName(), is("Superman"));
-        assertThat(product.getDescription(), is("Una figura de Superman en 3D"));
+        assertThat(product.getProductDescription(), is("Una figura de Superman en 3D"));
         assertThat(product.getProductImage(), is("/superman.jpg"));
         assertThat(product.getPrice(), is(12L));
     }

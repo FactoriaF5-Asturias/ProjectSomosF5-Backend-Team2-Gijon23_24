@@ -41,7 +41,7 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
         
         Product newProduct = Product.builder()
             .productName(product.productName)
-            .description(product.description)
+            .productDescription(product.productDescription)
             .productImage(product.image)
             .price(product.price)
             .build();
@@ -57,7 +57,7 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
         Product updatingProduct = repository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
         
         updatingProduct.setProductName(product.productName);
-        updatingProduct.setDescription(product.description);
+        updatingProduct.setProductDescription(product.productDescription);
         updatingProduct.setProductImage(product.image);
         updatingProduct.setPrice(product.price);
 

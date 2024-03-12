@@ -31,14 +31,14 @@ public class Product {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) 
-    @Column(name = "id_country")
+    @Column(name = "id_product")
     private Long id;
 
     @Column(name = "product_name")
     private String productName;
 
-    @Column
-    private String description;
+    @Column(name = "product_description")
+    private String productDescription;
 
     @Column(name = "product_image")
     private String productImage;
