@@ -44,7 +44,7 @@ public class Product {
     private String productImage;
 
     @Column
-    private Long price;
+    private float price;
 
     @Column
     @ManyToMany(fetch = FetchType.EAGER)

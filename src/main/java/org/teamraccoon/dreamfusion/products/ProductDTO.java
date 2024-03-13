@@ -4,5 +4,5 @@ public class ProductDTO {
     public String productName;
     public String productDescription;
     public String image;
-    public Long price;
+    public float price;
 }
