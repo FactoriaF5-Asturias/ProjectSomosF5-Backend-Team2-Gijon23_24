@@ -1,4 +1,4 @@
-package org.teamraccoon.dreamfusion.products;
+package org.teamraccoon.dreamfusion.categories;
 
 import java.util.List;
 
@@ -20,49 +20,49 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(path = "${api-endpoint}/products")
-public class ProductController {
+@RequestMapping(path = "${api-endpoint}/categories")
+public class CategoryController {
 
-    IGenericFullService<Product, ProductDTO> service;
+    IGenericFullService<Category, CategoryDTO> service;
 
     @GetMapping(path = "")
-    public List<Product> index() {
+    public List<Category> index() {
 
-        List<Product> products = service.getAll();
+        List<Category> categories = service.getAll();
 
-        return products;
+        return categories;
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Product> findById(@PathVariable("id") @NonNull Long id) throws Exception {
+    public ResponseEntity<Category> findById(@PathVariable("id") @NonNull Long id) throws Exception {
 
-        Product product = service.getById(id);
+        Category category = service.getById(id);
 
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(product);
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(category);
     }
 
     @GetMapping(path = "getByName/{name}")
-    public ResponseEntity<Product> findById(@PathVariable("name") @NonNull String name) throws Exception {
+    public ResponseEntity<Category> findById(@PathVariable("name") @NonNull String name) throws Exception {
 
-        Product product = service.getByName(name);
+        Category category = service.getByName(name);
 
-        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(product);
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(category);
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<Product> create(@RequestBody ProductDTO product) {
+    public ResponseEntity<Category> create(@RequestBody CategoryDTO category) {
 
-        Product newProduct = service.save(product);
+        Category newCategory = service.save(category);
 
-        return ResponseEntity.status(201).body(newProduct);
+        return ResponseEntity.status(201).body(newCategory);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable("id") @NonNull Long id, @RequestBody ProductDTO product) throws Exception {
+    public ResponseEntity<Category> update(@PathVariable("id") @NonNull Long id, @RequestBody CategoryDTO category) throws Exception {
 
-        Product updatedProduct = service.update(id, product);
+        Category updatedCategory = service.update(id, category);
 
-        return ResponseEntity.status(200).body(updatedProduct);
+        return ResponseEntity.status(200).body(updatedCategory);
     }
 
     @DeleteMapping(path = "/{id}")
