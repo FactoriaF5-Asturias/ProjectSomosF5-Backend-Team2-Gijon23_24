@@ -1,9 +1,15 @@
 package org.teamraccoon.dreamfusion.products;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.teamraccoon.dreamfusion.categories.Category;
+import org.teamraccoon.dreamfusion.categories.CategoryNotFoundException;
+import org.teamraccoon.dreamfusion.categories.CategoryRepository;
 import org.teamraccoon.dreamfusion.generics.IGenericFullService;
 import org.teamraccoon.dreamfusion.messages.Message;
 
@@ -11,6 +17,7 @@ import org.teamraccoon.dreamfusion.messages.Message;
 public class ProductService implements IGenericFullService<Product, ProductDTO> {
 
     ProductRepository repository;
+    CategoryRepository categoryRepository;
     
     public ProductService(ProductRepository repository) {
         this.repository = repository;
@@ -38,6 +45,8 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
 
     @Override
     public Product save(@NonNull ProductDTO product) {
+
+        Category category = categoryRepository.findById(product.categoryId).orElseThrow(() -> new CategoryNotFoundException("Category not found"));
         
         Product newProduct = Product.builder()
             .productName(product.productName)
@@ -45,6 +54,11 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
             .productImage(product.image)
             .price(product.price)
             .build();
+
+        Set<Category> categories = new HashSet<>();
+        categories.add(category);
+
+        newProduct.setCategories(categories);
 
         repository.save(newProduct);
 
@@ -77,7 +91,7 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
 
         Message message = new Message();
 
-        message.createMessage("Product with the name " + productName + " is deleted from the products table");
+        message.createMessage("Product with the name '" + productName + "' is deleted from the products table");
 
         return message;
     }

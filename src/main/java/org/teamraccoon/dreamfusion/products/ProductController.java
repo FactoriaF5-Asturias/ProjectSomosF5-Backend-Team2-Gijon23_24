@@ -41,6 +41,14 @@ public class ProductController {
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(ticket);
     }
 
+    @GetMapping(path = "getByName/{name}")
+    public ResponseEntity<Product> findById(@PathVariable("name") @NonNull String name) throws Exception {
+
+        Product ticket = service.getByName(name);
+
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(ticket);
+    }
+
     @PostMapping(path = "")
     public ResponseEntity<Product> create(@RequestBody ProductDTO ticket) {
 
