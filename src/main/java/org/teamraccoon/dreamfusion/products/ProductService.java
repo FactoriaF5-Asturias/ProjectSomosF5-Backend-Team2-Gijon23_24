@@ -69,15 +69,22 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
     public Product update(@NonNull Long id, ProductDTO product) throws Exception {
         
         Product updatingProduct = repository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        Category category = categoryRepository.findById(product.categoryId).orElseThrow(() -> new CategoryNotFoundException("Category not found"));
         
         updatingProduct.setProductName(product.productName);
         updatingProduct.setProductDescription(product.productDescription);
         updatingProduct.setProductImage(product.image);
         updatingProduct.setPrice(product.price);
 
-        Product updatedProduct = repository.save(updatingProduct);
+        Set<Category> categories = new HashSet<>();
+        categories.add(category);
+
+        updatingProduct.setCategories(categories);
+
+        repository.save(updatingProduct);
         
-        return updatedProduct;
+        return updatingProduct;
     }
 
     @Override
