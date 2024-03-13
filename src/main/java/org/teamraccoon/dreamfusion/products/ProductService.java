@@ -1,6 +1,5 @@
 package org.teamraccoon.dreamfusion.products;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,9 +17,10 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
 
     ProductRepository repository;
     CategoryRepository categoryRepository;
-    
-    public ProductService(ProductRepository repository) {
+
+    public ProductService(ProductRepository repository, CategoryRepository categoryRepository) {
         this.repository = repository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
