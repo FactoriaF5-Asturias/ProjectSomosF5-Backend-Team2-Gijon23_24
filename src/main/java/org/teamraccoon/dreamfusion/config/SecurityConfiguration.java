@@ -21,52 +21,56 @@ import org.teamraccoon.dreamfusion.security.JpaUserDetailsService;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-        @Value("${api-endpoint}")
-        String endpoint;
+	@Value("${api-endpoint}")
+	String endpoint;
 
-        JpaUserDetailsService jpaUserDetailsService;
+	JpaUserDetailsService jpaUserDetailsService;
 
-        public SecurityConfiguration(JpaUserDetailsService jpaUserDetailsService) {
-                this.jpaUserDetailsService = jpaUserDetailsService;
-        }
+	public SecurityConfiguration(JpaUserDetailsService jpaUserDetailsService) {
+		this.jpaUserDetailsService = jpaUserDetailsService;
+	}
 
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-                http
-                                .cors(Customizer.withDefaults())
-                                .csrf(csrf -> csrf.disable())
-                                .formLogin(form -> form.disable())
-                                .logout(out -> out
-                                                .logoutUrl(endpoint + "/logout")
-                                                .deleteCookies("JSESSIONID"))
-                                .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
-                                                .anyRequest().authenticated())
-                                .userDetailsService(jpaUserDetailsService)
-                                .httpBasic(Customizer.withDefaults())
-                                .sessionManagement(session -> session
-                                                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+		http
+				.cors(Customizer.withDefaults())
+				.csrf(csrf -> csrf.disable())
+				.formLogin(form -> form.disable())
+				.logout(out -> out
+						.logoutUrl(endpoint + "/logout")
+						.deleteCookies("JSESSIONID"))
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.GET, endpoint + "/products/**").permitAll()
+						.requestMatchers(endpoint + "/products/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, endpoint + "/categories/**").permitAll()
+						.requestMatchers(endpoint + "/categories/**").hasRole("ADMIN")
+						.anyRequest().authenticated())
+				.userDetailsService(jpaUserDetailsService)
+				.httpBasic(Customizer.withDefaults())
+				.sessionManagement(session -> session
+						.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
-                http.headers(header -> header.frameOptions(frame -> frame.sameOrigin()));
+		http.headers(header -> header.frameOptions(frame -> frame.sameOrigin()));
 
-                return http.build();
-        }
+		return http.build();
+	}
 
-        @Bean
-        CorsConfigurationSource corsConfigurationSource() {
-                CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowCredentials(true);
-                configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-                configuration.setAllowedHeaders(Arrays.asList("Content-Type","Authorization"));
-                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-                source.registerCorsConfiguration("/**", configuration);
-                return source;
-        }
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowCredentials(true);
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+		configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 
-        @Bean
-         PasswordEncoder passwordEncoder() {
-                 return new BCryptPasswordEncoder();
-        }
-    }
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+}
