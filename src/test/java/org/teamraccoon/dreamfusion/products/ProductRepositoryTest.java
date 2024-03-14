@@ -53,15 +53,14 @@ public class ProductRepositoryTest {
         newProduct.setProductName("Una cosa inutil");
         entityManager.persist(newProduct);
 
-        Optional<Product> searchedProduct = repository.findByProductName("Una cosa inutil");
-        assertTrue(searchedProduct.isPresent(), "Product should be found");
-        Product actualProduct = searchedProduct.get();
-
-        assertEquals("Una cosa inutil", actualProduct.getProductName());
-        assertEquals(Long.valueOf(16), actualProduct.getId());
+        Product searchedProduct = repository.findByProductName("Una cosa inutil").orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        
+        assertEquals("Una cosa inutil", searchedProduct.getProductName());
+        assertEquals(Long.valueOf(16), searchedProduct.getId());
     }
 
     @Test
+    @DisplayName("Test delete product")
     void testDeleteProductById() {
         Product newProduct = new Product();
         entityManager.persist(newProduct);
@@ -77,7 +76,5 @@ public class ProductRepositoryTest {
     void tearDown() {
         entityManager.clear();
     }
-
-    
 
 }
