@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,6 +42,7 @@ public class SecurityConfiguration {
 						.logoutUrl(endpoint + "/logout")
 						.deleteCookies("JSESSIONID"))
 				.authorizeHttpRequests(auth -> auth
+						.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
 						.requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.GET, endpoint + "/products/**").permitAll()
 						.requestMatchers(endpoint + "/products/**").hasRole("ADMIN")

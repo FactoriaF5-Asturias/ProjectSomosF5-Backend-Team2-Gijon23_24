@@ -36,7 +36,7 @@ public class ProductTest {
     }
 
     @Test
-    void testProductHaveIdProductnamePasswordProfile() {
+    void testProductHasIdNameDescriptionImagePrice() {
         assertThat(product.getId(), is(1L));
         assertThat(product.getProductName(), is("Superman"));
         assertThat(product.getProductDescription(), is("Una figura de Superman en 3D"));
