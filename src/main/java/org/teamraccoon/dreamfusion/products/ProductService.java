@@ -51,7 +51,6 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
         Product newProduct = Product.builder()
             .productName(product.productName)
             .productDescription(product.productDescription)
-            .productImage(product.image)
             .price(product.price)
             .build();
 
@@ -74,7 +73,6 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
         
         updatingProduct.setProductName(product.productName);
         updatingProduct.setProductDescription(product.productDescription);
-        updatingProduct.setProductImage(product.image);
         updatingProduct.setPrice(product.price);
 
         Set<Category> categories = new HashSet<>();
