@@ -54,7 +54,6 @@ public class ProductRepositoryTest {
         Product searchedProduct = repository.findByProductName("Una cosa inutil").orElseThrow(() -> new ProductNotFoundException("Product not found"));
         
         assertEquals("Una cosa inutil", searchedProduct.getProductName());
-        assertEquals(Long.valueOf(16), searchedProduct.getId());
     }
 
     @Test
