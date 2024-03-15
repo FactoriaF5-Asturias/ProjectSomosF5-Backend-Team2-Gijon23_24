@@ -1,4 +1,4 @@
-package org.teamraccoon.dreamfusion.generics;
+package org.teamraccoon.dreamfusion.generic;
 
 import java.util.List;
 
