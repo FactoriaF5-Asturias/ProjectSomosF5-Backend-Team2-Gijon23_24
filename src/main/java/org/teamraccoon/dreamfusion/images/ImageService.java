@@ -36,7 +36,7 @@ public class ImageService {
         this.productRepository = productRepository;
     }
 
-    public String saveMainImage(@NonNull Long productId, MultipartFile file) {
+    public String save(@NonNull Long productId, MultipartFile file) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String currentTime = LocalDateTime.now().format(DATETIME_FORMATTER);
         String baseName = fileName.substring(0, fileName.lastIndexOf("."));
@@ -48,7 +48,6 @@ public class ImageService {
 
         Image newImage = Image.builder()
             .imageName(combinedName)
-            .isMainImage(true)
             .product(product)
             .build();
 
@@ -56,6 +55,9 @@ public class ImageService {
             if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file.");
 			}
+            if (combinedName.contains("MainImage")) {
+                newImage.setMainImage(true);
+            }
             Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
             imageRepository.save(newImage);
         } catch (IOException e) {
@@ -63,5 +65,10 @@ public class ImageService {
         }
 
         return combinedName;
+    }
+
+    public Image markImageAsMain(Image image) {
+        image.setMainImage(true);
+        return image;
     }
 }

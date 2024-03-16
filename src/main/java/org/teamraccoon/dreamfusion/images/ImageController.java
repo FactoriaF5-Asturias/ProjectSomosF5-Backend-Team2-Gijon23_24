@@ -23,28 +23,20 @@ public class ImageController {
     @Autowired
     private ImageService service;
 
-    @PostMapping(path = "/images/uploadMainImage/{id}")
-    ResponseEntity<String> uploadMainImage(@PathVariable("id") @NonNull Long id, @RequestParam("image") MultipartFile mainImage) {
-
-        service.saveMainImage(id, mainImage);
-
-        return ResponseEntity.status(201).body("File with the name " + mainImage.getOriginalFilename() + " is successfully uploaded");
-    }
-
-    @PostMapping(path = "/images/uploadImages")
-    ResponseEntity<ResponseMessage> uploadImages(@RequestParam("images") MultipartFile[] images) {
+    @PostMapping(path = "/images/uploadImages/{id}")
+    ResponseEntity<ResponseMessage> uploadImages(@PathVariable("id") @NonNull Long id, @RequestParam("files") MultipartFile[] files) {
 
         String message = "";
 
         try {
             List<String> fileNames = new ArrayList<>();
 
-            Arrays.asList(images).stream().forEach(file -> {
-                // service.save(file);
+            Arrays.asList(files).stream().forEach(file -> {
+                service.save(id, file);
                 fileNames.add(file.getOriginalFilename());
             });
 
-            message = "File with the names '" + fileNames + "' are uploaded successfully: ";
+            message = "File with the names " + fileNames + " are uploaded successfully: ";
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
             message = "Fail to upload files!";
