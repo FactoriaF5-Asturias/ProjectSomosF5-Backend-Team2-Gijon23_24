@@ -34,7 +34,7 @@ public class ProductTest {
         images.add(image);
         
         category.setCategoryName("Para Hogar");
-        product = new Product(1L, "Superman", "Una figura de Superman en 3D", "superman.jpg", images, 12L, categories);
+        product = new Product(1L, "Superman", "Una figura de Superman en 3D", images, 12L, categories);
     }
 
     @Test
@@ -48,7 +48,6 @@ public class ProductTest {
         assertThat(product.getId(), is(1L));
         assertThat(product.getProductName(), is("Superman"));
         assertThat(product.getProductDescription(), is("Una figura de Superman en 3D"));
-        assertThat(product.getMainImage(), is("superman.jpg"));
         assertThat(product.getPrice(), is(12.0F));
     }
 }

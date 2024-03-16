@@ -5,6 +5,8 @@ import java.util.Set;
 import org.teamraccoon.dreamfusion.categories.Category;
 import org.teamraccoon.dreamfusion.images.Image;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,7 +34,7 @@ import lombok.Setter;
 public class Product {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
     private Long id;
 
@@ -41,9 +43,6 @@ public class Product {
 
     @Column(name = "product_description")
     private String productDescription;
-
-    @Column(name = "main_image")
-    private String mainImage;
 
     @OneToMany(mappedBy = "product")
     private Set<Image> images;

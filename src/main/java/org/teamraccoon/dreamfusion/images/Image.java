@@ -2,6 +2,8 @@ package org.teamraccoon.dreamfusion.images;
 
 import org.teamraccoon.dreamfusion.products.Product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +35,10 @@ public class Image {
     @Column(name = "image_name")
     private String imageName;
 
+    @Column(name = "is_main_image")
+    private boolean isMainImage;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = true)
     private Product product;
