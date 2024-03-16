@@ -7,9 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import javax.management.RuntimeErrorException;
 
@@ -26,22 +23,20 @@ public class ImageService {
 
     ImageRepository imageRepository;
     ProductRepository productRepository;
+    Time time;
     private final String uploadDir = "src/main/resources/static/images/";
-    static final String TIMESTAMP_FORMAT = "yyyyMMddHHmmss";
-    static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern(TIMESTAMP_FORMAT);
-    static final SimpleDateFormat SIMPLEDATE_FORMAT = new SimpleDateFormat(TIMESTAMP_FORMAT);
-    
-    public ImageService(ImageRepository imageRepository, ProductRepository productRepository) {
+
+    public ImageService(ImageRepository imageRepository, ProductRepository productRepository, Time time) {
         this.imageRepository = imageRepository;
         this.productRepository = productRepository;
+        this.time = time;
     }
 
     public String save(@NonNull Long productId, MultipartFile file) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String currentTime = LocalDateTime.now().format(DATETIME_FORMATTER);
         String baseName = fileName.substring(0, fileName.lastIndexOf("."));
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
-        String combinedName = MessageFormat.format("{0}-{1}.{2}", baseName, currentTime, fileExtension);
+        String combinedName = MessageFormat.format("{0}-{1}.{2}", baseName, time.checkCurrentTime(), fileExtension);
         Path path = Paths.get(uploadDir, combinedName);
 
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
