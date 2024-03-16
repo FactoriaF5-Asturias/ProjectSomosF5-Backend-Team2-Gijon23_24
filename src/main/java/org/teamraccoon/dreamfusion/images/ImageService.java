@@ -62,6 +62,6 @@ public class ImageService {
             throw new RuntimeErrorException(null, "File" + combinedName + "has not been saved");
         }
 
-        return fileName;
+        return combinedName;
     }
 }
