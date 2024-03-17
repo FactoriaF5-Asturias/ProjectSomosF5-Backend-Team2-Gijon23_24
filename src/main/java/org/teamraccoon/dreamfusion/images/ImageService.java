@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.teamraccoon.dreamfusion.products.Product;
 import org.teamraccoon.dreamfusion.products.ProductNotFoundException;
 import org.teamraccoon.dreamfusion.products.ProductRepository;
+import org.teamraccoon.dreamfusion.utilities.Time;
 
 @Service
 public class ImageService {

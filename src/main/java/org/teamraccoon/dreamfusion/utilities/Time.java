@@ -1,4 +1,4 @@
-package org.teamraccoon.dreamfusion.images;
+package org.teamraccoon.dreamfusion.utilities;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
