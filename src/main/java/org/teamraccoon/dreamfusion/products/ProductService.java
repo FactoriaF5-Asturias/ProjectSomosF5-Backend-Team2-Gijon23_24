@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.teamraccoon.dreamfusion.categories.Category;
 import org.teamraccoon.dreamfusion.categories.CategoryNotFoundException;
 import org.teamraccoon.dreamfusion.categories.CategoryRepository;
-import org.teamraccoon.dreamfusion.generics.IGenericFullService;
+import org.teamraccoon.dreamfusion.generic.IGenericFullService;
 import org.teamraccoon.dreamfusion.messages.Message;
 
 @Service

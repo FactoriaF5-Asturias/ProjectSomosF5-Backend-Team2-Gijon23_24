@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.teamraccoon.dreamfusion.generics.IGenericFullService;
+import org.teamraccoon.dreamfusion.generic.IGenericFullService;
 import org.teamraccoon.dreamfusion.messages.Message;
 
 import lombok.AllArgsConstructor;

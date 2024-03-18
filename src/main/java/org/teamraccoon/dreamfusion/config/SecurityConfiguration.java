@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -42,6 +41,7 @@ public class SecurityConfiguration {
 						.deleteCookies("JSESSIONID"))
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.POST, endpoint + "/users/register").permitAll()
 						.requestMatchers(HttpMethod.GET, endpoint + "/products/**").permitAll()
 						.requestMatchers(endpoint + "/products/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, endpoint + "/categories/**").permitAll()
@@ -70,7 +70,7 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+	public BCryptPasswordEncoder passwordEncoder() {
+    	return new BCryptPasswordEncoder();
 	}
 }
