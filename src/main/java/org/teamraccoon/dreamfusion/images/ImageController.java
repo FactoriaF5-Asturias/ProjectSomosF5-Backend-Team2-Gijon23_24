@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.teamraccoon.dreamfusion.generic.IStorageService;
 import org.teamraccoon.dreamfusion.messages.ResponseMessage;
 
 @RestController
@@ -21,7 +22,7 @@ import org.teamraccoon.dreamfusion.messages.ResponseMessage;
 public class ImageController {
 
     @Autowired
-    private ImageService service;
+    IStorageService service;
 
     @PostMapping(path = "/images/uploadImages/{id}")
     ResponseEntity<ResponseMessage> uploadImages(@PathVariable("id") @NonNull Long id, @RequestParam("files") MultipartFile[] files) {
