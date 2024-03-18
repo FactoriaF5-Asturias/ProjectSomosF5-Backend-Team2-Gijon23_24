@@ -3,6 +3,7 @@ package org.teamraccoon.dreamfusion.products;
 import java.util.Set;
 
 import org.teamraccoon.dreamfusion.categories.Category;
+import org.teamraccoon.dreamfusion.images.Image;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +32,7 @@ import lombok.Setter;
 public class Product {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
     private Long id;
 
@@ -40,8 +42,8 @@ public class Product {
     @Column(name = "product_description")
     private String productDescription;
 
-    @Column(name = "product_image")
-    private String productImage;
+    @OneToMany(mappedBy = "product")
+    private Set<Image> images;
 
     @Column
     private float price;
