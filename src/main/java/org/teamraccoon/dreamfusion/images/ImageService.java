@@ -31,7 +31,6 @@ public class ImageService implements IStorageService {
     ProductRepository productRepository;
     Time time;
     private final Path rootLocation;
-    private final String uploadDir = "src/main/resources/static/images/";
 
     public ImageService(ImageRepository imageRepository, ProductRepository productRepository, Time time, StorageProperties properties) {
         if(properties.getLocation().trim().length() == 0){
@@ -49,7 +48,7 @@ public class ImageService implements IStorageService {
         String baseName = fileName.substring(0, fileName.lastIndexOf("."));
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
         String combinedName = MessageFormat.format("{0}-{1}.{2}", baseName, time.checkCurrentTime(), fileExtension);
-        Path path = Paths.get(uploadDir, combinedName);
+        Path path2 = load(combinedName);
 
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
@@ -65,7 +64,7 @@ public class ImageService implements IStorageService {
             if (combinedName.contains("MainImage")) {
                 newImage.setMainImage(true);
             }
-            Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(inputStream, path2, StandardCopyOption.REPLACE_EXISTING);
             imageRepository.save(newImage);
         } catch (IOException e) {
             throw new RuntimeErrorException(null, "File" + combinedName + "has not been saved");
