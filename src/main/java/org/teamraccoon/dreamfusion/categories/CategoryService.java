@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import org.teamraccoon.dreamfusion.generics.IGenericFullService;
+import org.teamraccoon.dreamfusion.generic.IGenericFullService;
 import org.teamraccoon.dreamfusion.messages.Message;
 
 @Service

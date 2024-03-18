@@ -10,11 +10,13 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.teamraccoon.dreamfusion.categories.Category;
+import org.teamraccoon.dreamfusion.images.Image;
 
 public class ProductTest {
 
     Product product;
     Category category;
+    Image image;
 
     @BeforeEach
     void setUp() {
@@ -24,23 +26,28 @@ public class ProductTest {
 
         Set<Category> categories = new HashSet<Category>();
         categories.add(category);
+
+        image = new Image();
+        image.setImageName("superman-2.jpg");
+
+        Set<Image> images = new HashSet<Image>();
+        images.add(image);
         
         category.setCategoryName("Para Hogar");
-        product = new Product(1L, "Superman", "Una figura de Superman en 3D", "/superman.jpg", 12L, categories);
+        product = new Product(1L, "Superman", "Una figura de Superman en 3D", images, 12L, categories);
     }
 
     @Test
     void testProductHas6Attributes() {
         Field[] fields = product.getClass().getDeclaredFields();
-        assertThat(fields.length, is(6));
+        assertThat(fields.length, is(7));
     }
 
     @Test
-    void testProductHaveIdProductnamePasswordProfile() {
+    void testProductHasIdNameDescriptionMainImageImagesPriceCategories() {
         assertThat(product.getId(), is(1L));
         assertThat(product.getProductName(), is("Superman"));
         assertThat(product.getProductDescription(), is("Una figura de Superman en 3D"));
-        assertThat(product.getProductImage(), is("/superman.jpg"));
-        assertThat(product.getPrice(), is(12L));
+        assertThat(product.getPrice(), is(12.0F));
     }
 }
