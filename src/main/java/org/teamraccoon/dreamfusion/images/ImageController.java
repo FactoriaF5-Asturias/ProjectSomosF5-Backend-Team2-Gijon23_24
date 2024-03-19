@@ -25,19 +25,23 @@ public class ImageController {
     IStorageService service;
 
     @PostMapping(path = "/images/uploadImages/{id}")
-    ResponseEntity<ResponseMessage> uploadImages(@PathVariable("id") @NonNull Long id, @RequestParam("files") MultipartFile[] files) {
+    ResponseEntity<ResponseMessage> uploadImages(@PathVariable("id") @NonNull Long id, @RequestParam("file") MultipartFile file, @RequestParam("files") MultipartFile[] files) {
 
         String message = "";
 
         try {
+            String filename = new String();
             List<String> fileNames = new ArrayList<>();
 
+            service.saveMainImage(id, file);
+            filename = file.getOriginalFilename();
+
+            service.saveImages(id, files);
             Arrays.asList(files).stream().forEach(file -> {
-                service.save(id, file);
                 fileNames.add(file.getOriginalFilename());
             });
 
-            message = "File with the names " + fileNames + " are uploaded successfully: ";
+            message = "File with the name " + fileName + "and files " + fileNames + " are uploaded successfully: ";
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
             message = "Fail to upload files!";
