@@ -14,9 +14,8 @@ public class RoleService implements IGenericGetService<Role>{
         this.repository = repository;
     }
 
-    public Role getById(@NonNull Long id){
-        Role role = repository.findById(id).orElseThrow( () -> new RoleNotFoundException("Role Not Found"));
-
+    public Role getById(@NonNull Long id) {
+        Role role = repository.findById(id).orElseThrow( () -> new RoleNotFoundException("Role Not found") );
         return role;
     }
 }

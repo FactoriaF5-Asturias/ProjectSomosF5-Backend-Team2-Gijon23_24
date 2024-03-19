@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import io.micrometer.common.lang.NonNull;
-
 @Service
 public class UserService {
 
@@ -21,9 +19,4 @@ public class UserService {
         return users;
     }
 
-    public User save(@NonNull User newUser){
-        User userSaved = repository.save(newUser);
-
-        return userSaved;
-    }
 }
