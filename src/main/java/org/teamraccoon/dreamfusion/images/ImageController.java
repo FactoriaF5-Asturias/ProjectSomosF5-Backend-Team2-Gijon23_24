@@ -30,18 +30,18 @@ public class ImageController {
         String message = "";
 
         try {
-            String filename = new String();
+            String mainFilename = new String();
             List<String> fileNames = new ArrayList<>();
 
             service.saveMainImage(id, file);
-            filename = file.getOriginalFilename();
+            mainFilename = file.getOriginalFilename();
 
             service.saveImages(id, files);
-            Arrays.asList(files).stream().forEach(file -> {
+            Arrays.asList(files).stream().forEach(image -> {
                 fileNames.add(file.getOriginalFilename());
             });
 
-            message = "File with the name " + fileName + "and files " + fileNames + " are uploaded successfully: ";
+            message = "File with the name " + mainFilename + " and files " + fileNames + " are uploaded successfully: ";
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
             message = "Fail to upload files!";

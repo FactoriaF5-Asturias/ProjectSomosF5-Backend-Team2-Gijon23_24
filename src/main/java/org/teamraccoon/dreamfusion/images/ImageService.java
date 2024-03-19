@@ -46,7 +46,7 @@ public class ImageService implements IStorageService {
     }
 
     @Override
-    public void saveMainImage(@NonNull Long productId, MultipartFile[] files) {
+    public void saveMainImage(@NonNull Long productId, MultipartFile file) {
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String baseName = fileName.substring(0, fileName.lastIndexOf("."));
@@ -58,15 +58,12 @@ public class ImageService implements IStorageService {
 
         Image newImage = Image.builder()
             .imageName(combinedName)
-            .product(product)
+            .mainImageProduct(product)
             .build();
 
         try (InputStream inputStream = file.getInputStream()) {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file.");
-            }
-            if (combinedName.contains("MainImage")) {
-                newImage.setMainImage(true);
             }
             Files.copy(inputStream, path2, StandardCopyOption.REPLACE_EXISTING);
             imageRepository.save(newImage);
@@ -96,9 +93,6 @@ public class ImageService implements IStorageService {
             try (InputStream inputStream = file.getInputStream()) {
                 if (file.isEmpty()) {
                     throw new StorageException("Failed to store empty file.");
-                }
-                if (combinedName.contains("MainImage")) {
-                    newImage.setMainImage(true);
                 }
                 Files.copy(inputStream, path2, StandardCopyOption.REPLACE_EXISTING);
                 imageRepository.save(newImage);
@@ -146,9 +140,4 @@ public class ImageService implements IStorageService {
 	public void deleteAll() {
 		FileSystemUtils.deleteRecursively(rootLocation.toFile());
 	}
-
-    public Image markImageAsMain(Image image) {
-        image.setMainImage(true);
-        return image;
-    }
 }
