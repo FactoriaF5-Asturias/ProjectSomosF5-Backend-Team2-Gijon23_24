@@ -42,6 +42,9 @@ public class Product {
     @Column(name = "product_description")
     private String productDescription;
 
+    @OneToOne(mappedBy = "product2")
+    private Image mainImage;
+
     @OneToMany(mappedBy = "product")
     private Set<Image> images;
 
