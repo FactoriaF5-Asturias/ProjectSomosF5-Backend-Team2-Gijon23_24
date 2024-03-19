@@ -14,7 +14,7 @@ INSERT INTO role_users (role_id, user_id) VALUES (2, 3);
 
 INSERT INTO categories (id_category, category_name) VALUES (default, 'Para hogar');
 INSERT INTO categories (id_category, category_name) VALUES (default, 'Zona Geek');
-INSERT INTO categories (id_category, category_name) VALUES (default, 'Litofonías');
+INSERT INTO categories (id_category, category_name) VALUES (default, 'Litofanías');
 
 /*Products*/
 /*Las ideas de productos: https://all3dp.com/es/1/objetos-3d-utiles-ideas-imprimir-3d */
@@ -39,15 +39,15 @@ INSERT INTO products (id_product, product_name, product_description, price) VALU
 
 /*Category 3*/
 /* https://www.etsy.com/listing/1306615109/personalized-litofania-with-your-photo?ga_order=most_relevant&ga_search_type=all&ga_view_type=gallery&ga_search_query=litofania+personalizado&ref=sr_gallery-1-2&frs=1&organic_search_click=1 */
-INSERT INTO products (id_product, product_name, product_description, price) VALUES (default, 'Litofonía de un perro', 'Litofonía de un perro y escrito de Eren 2015', 29.99);
+INSERT INTO products (id_product, product_name, product_description, price) VALUES (default, 'Litofanía de un perro', 'Litofanía de un perro y escrito de Eren 2015', 29.99);
 /* https://www.etsy.com/listing/1018490312/custom-litofanias?ga_order=most_relevant&ga_search_type=all&ga_view_type=gallery&ga_search_query=litofania+personalizado&ref=sr_gallery-1-7&frs=1&organic_search_click=1 */
-INSERT INTO products (id_product, product_name, product_description, price) VALUES (default, 'Litofonía Amor para simpre', 'Litofonía de una pareja feliz.', 39.99);
+INSERT INTO products (id_product, product_name, product_description, price) VALUES (default, 'Litofanía Amor para simpre', 'Litofanía de una pareja feliz.', 39.99);
 /* https://www.etsy.com/listing/1658428405/star-lithophany?ga_order=most_relevant&ga_search_type=all&ga_view_type=gallery&ga_search_query=litofania+personalizado&ref=sr_gallery-1-11&frs=1&organic_search_click=1 */
-INSERT INTO products (id_product, product_name, product_description, price) VALUES (default, 'Litofonía Esrella Con Un Bebé', 'Litofonía en forma de una estrella con un bebé', 19.99);
+INSERT INTO products (id_product, product_name, product_description, price) VALUES (default, 'Litofanía Estrella Con Un Bebé', 'Litofanía en forma de una estrella con un bebé', 19.99);
 /* https://www.etsy.com/listing/819391996/3d-printed-lithophane-lightbox?ga_order=most_relevant&ga_search_type=all&ga_view_type=gallery&ga_search_query=litofania+personalizado&ref=sc_gallery-3-7&plkey=01203bb24d8064fad683bda50a142f11bba97ee1%3A819391996 */
-INSERT INTO products (id_product, product_name, product_description, price) VALUES (default, 'Litofonía Prince', 'Una litofonía en forma de cubo con imagenes de Prince', 24.99);
+INSERT INTO products (id_product, product_name, product_description, price) VALUES (default, 'Litofanía Prince', 'Una litofonía en forma de cubo con imagenes de Prince', 24.99);
 /* https://www.etsy.com/listing/963042341/custom-nightlight-your-picture-made-into?ga_order=most_relevant&ga_search_type=all&ga_view_type=gallery&ga_search_query=litofonia&ref=sc_gallery-2-7&sts=1&search_preloaded_img=1&plkey=cfddcd828e489a4399fc2e80655594158df225bc%3A963042341 */
-INSERT INTO products (id_product, product_name, product_description, price) VALUES (default, 'Litofonía Gato', 'Litofonía de un gato', 34.99);
+INSERT INTO products (id_product, product_name, product_description, price) VALUES (default, 'Litofanía Gato', 'Litofanía de un gato', 34.99);
 
 /*Categories-Products*/
 
@@ -68,3 +68,24 @@ INSERT INTO categories_products (product_id, category_id) VALUES (12, 3);
 INSERT INTO categories_products (product_id, category_id) VALUES (13, 3);
 INSERT INTO categories_products (product_id, category_id) VALUES (14, 3);
 INSERT INTO categories_products (product_id, category_id) VALUES (15, 3);
+
+/*Images*/
+
+/*Category 1*/
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'tope-de-puerta.jpg', true, 1);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'papelera-sobremesa.jpg', true, 2);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'tiburon-marcapaginas.jpg', true, 3);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'soporte-auriculares.jpg', true, 4);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'portarollos-oveja.jpg', true, 5);
+/*Category 2*/
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'goku-statue.jpg', true, 6);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'bulma-statue.jpg', true, 7);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'krillin-statue.jpg', true, 8);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'piccolo-statue.jpg', true, 9);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'son-gohan-statue.jpg', true, 10);
+/*Category 3*/
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'litofania-perro.jpg', true, 11);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'litofania-pareja.jpg', true, 12);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'litofania-estrella-bebe.jpg', true, 13);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'litofania-prince.jpg', true, 14);
+INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'litofania-gato.jpg', true, 15);

@@ -15,7 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,9 +41,6 @@ public class Product {
 
     @Column(name = "product_description")
     private String productDescription;
-
-    @OneToOne(mappedBy = "mainImageProduct")
-    private Image mainImage;
 
     @OneToMany(mappedBy = "product")
     private Set<Image> images;

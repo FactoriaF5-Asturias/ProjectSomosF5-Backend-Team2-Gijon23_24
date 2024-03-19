@@ -42,7 +42,7 @@ public class ImageController {
 
             service.saveImages(id, files);
             Arrays.asList(files).stream().forEach(image -> {
-                fileNames.add(file.getOriginalFilename());
+                fileNames.add(image.getOriginalFilename());
             });
 
             message = "File with the name " + mainFilename + " and files " + fileNames + " are uploaded successfully: ";

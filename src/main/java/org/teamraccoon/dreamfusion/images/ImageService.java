@@ -58,7 +58,8 @@ public class ImageService implements IStorageService {
 
         Image newImage = Image.builder()
             .imageName(combinedName)
-            .mainImageProduct(product)
+            .isMainImage(true)
+            .product(product)
             .build();
 
         try (InputStream inputStream = file.getInputStream()) {
@@ -87,6 +88,7 @@ public class ImageService implements IStorageService {
     
             Image newImage = Image.builder()
                 .imageName(combinedName)
+                .isMainImage(false)
                 .product(product)
                 .build();
     
