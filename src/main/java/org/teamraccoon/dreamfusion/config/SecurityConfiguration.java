@@ -15,6 +15,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.teamraccoon.dreamfusion.auth.NoPopupBasicAuthenticationEntryPoint;
 import org.teamraccoon.dreamfusion.security.JpaUserDetailsService;
 
 @Configuration
@@ -37,6 +38,7 @@ public class SecurityConfiguration {
 				.cors(Customizer.withDefaults())
 				.csrf(csrf -> csrf.disable())
 				.formLogin(form -> form.disable())
+				.authenticationEntryPoint(new NoPopupBasicAuthenticationEntryPoint())
 				.logout(out -> out
 						.logoutUrl(endpoint + "/logout")
 						.deleteCookies("JSESSIONID"))
