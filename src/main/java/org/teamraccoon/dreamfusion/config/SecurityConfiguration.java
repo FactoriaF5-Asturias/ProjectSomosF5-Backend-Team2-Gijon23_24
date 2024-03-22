@@ -1,6 +1,7 @@
 package org.teamraccoon.dreamfusion.config;
 
 import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,6 +48,7 @@ public class SecurityConfiguration {
 						.requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.POST, endpoint + "/users/register").permitAll()
 						.requestMatchers(HttpMethod.GET, endpoint + "/products/**").permitAll()
+						.requestMatchers(HttpMethod.GET, endpoint + "/images/**").permitAll()
 						.requestMatchers(endpoint + "/products/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, endpoint + "/categories/**").permitAll()
 						.requestMatchers(endpoint + "/categories/**").hasRole("ADMIN")
@@ -75,6 +77,6 @@ public class SecurityConfiguration {
 
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
-    	return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder();
 	}
 }
