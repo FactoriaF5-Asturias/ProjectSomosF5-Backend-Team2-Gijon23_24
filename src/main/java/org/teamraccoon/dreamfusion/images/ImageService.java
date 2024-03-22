@@ -104,6 +104,42 @@ public class ImageService implements IStorageService {
         });
     }
 
+    // @Override
+    public void updateMainImage(@NonNull Long productId, MultipartFile file) {
+
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String baseName = fileName.substring(0, fileName.lastIndexOf("."));
+        String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+        String combinedName = MessageFormat.format("{0}-{1}.{2}", baseName, time.checkCurrentTime(), fileExtension);
+        Path path2 = load(combinedName);
+
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        for (Image image : product.getImages()) {
+            if (image.isMainImage() && image.getImageName() == fileName) {
+                return;
+            }
+            if (image.isMainImage() && image.getImageName() != fileName) {
+                Image newImage = Image.builder()
+                    .imageName(combinedName)
+                    .isMainImage(true)
+                    .product(product)
+                    .build();
+
+                try (InputStream inputStream = file.getInputStream()) {
+                    if (file.isEmpty()) {
+                        throw new StorageException("Failed to store empty file.");
+                    }
+                    Files.copy(inputStream, path2, StandardCopyOption.REPLACE_EXISTING);
+                    imageRepository.save(newImage);
+                } catch (IOException e) {
+                    throw new RuntimeErrorException(null, "File" + combinedName + "has not been saved");
+                }
+            }
+        }
+
+    }
+
     @Override
 	public Path load(String filename) {
 		return rootLocation.resolve(filename);
