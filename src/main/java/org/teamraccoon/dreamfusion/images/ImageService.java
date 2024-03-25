@@ -34,12 +34,13 @@ public class ImageService implements IStorageService {
     Time time;
     private final Path rootLocation;
 
-    public ImageService(ImageRepository imageRepository, ProductRepository productRepository, Time time, StorageProperties properties) {
-        if(properties.getLocation().trim().length() == 0){
-            throw new StorageException("File upload location can not be Empty."); 
+    public ImageService(ImageRepository imageRepository, ProductRepository productRepository, Time time,
+            StorageProperties properties) {
+        if (properties.getLocation().trim().length() == 0) {
+            throw new StorageException("File upload location can not be Empty.");
         }
 
-		this.rootLocation = Paths.get(properties.getLocation());
+        this.rootLocation = Paths.get(properties.getLocation());
         this.imageRepository = imageRepository;
         this.productRepository = productRepository;
         this.time = time;
@@ -54,13 +55,14 @@ public class ImageService implements IStorageService {
         String combinedName = MessageFormat.format("{0}-{1}.{2}", baseName, time.checkCurrentTime(), fileExtension);
         Path path2 = load(combinedName);
 
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         Image newImage = Image.builder()
-            .imageName(combinedName)
-            .isMainImage(true)
-            .product(product)
-            .build();
+                .imageName(combinedName)
+                .isMainImage(true)
+                .product(product)
+                .build();
 
         try (InputStream inputStream = file.getInputStream()) {
             if (file.isEmpty()) {
@@ -83,15 +85,16 @@ public class ImageService implements IStorageService {
             String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
             String combinedName = MessageFormat.format("{0}-{1}.{2}", baseName, time.checkCurrentTime(), fileExtension);
             Path path2 = load(combinedName);
-    
-            Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
-    
+
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
             Image newImage = Image.builder()
-                .imageName(combinedName)
-                .isMainImage(false)
-                .product(product)
-                .build();
-    
+                    .imageName(combinedName)
+                    .isMainImage(false)
+                    .product(product)
+                    .build();
+
             try (InputStream inputStream = file.getInputStream()) {
                 if (file.isEmpty()) {
                     throw new StorageException("Failed to store empty file.");
@@ -104,42 +107,91 @@ public class ImageService implements IStorageService {
         });
     }
 
-    @Override
-	public Path load(String filename) {
-		return rootLocation.resolve(filename);
-	}
+    // // @Override
+    // public void updateMainImage(@NonNull Long productId, MultipartFile file) {
+
+    // String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+    // String baseName = fileName.substring(0, fileName.lastIndexOf("."));
+    // String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+    // String combinedName = MessageFormat.format("{0}-{1}.{2}", baseName,
+    // time.checkCurrentTime(), fileExtension);
+    // Path path2 = load(combinedName);
+
+    // Product product = productRepository.findById(productId).orElseThrow(() -> new
+    // ProductNotFoundException("Product not found"));
+
+    // for (Image image : product.getImages()) {
+    // if (image.isMainImage() && image.getImageName() == fileName) {
+    // return;
+    // }
+    // if (image.isMainImage() && image.getImageName() != fileName) {
+    // Image newImage = Image.builder()
+    // .imageName(combinedName)
+    // .isMainImage(true)
+    // .product(product)
+    // .build();
+
+    // try (InputStream inputStream = file.getInputStream()) {
+    // if (file.isEmpty()) {
+    // throw new StorageException("Failed to store empty file.");
+    // }
+    // Files.copy(inputStream, path2, StandardCopyOption.REPLACE_EXISTING);
+    // imageRepository.save(newImage);
+    // } catch (IOException e) {
+    // throw new RuntimeErrorException(null, "File" + combinedName + "has not been
+    // saved");
+    // }
+    // }
+    // }
+
+    // }
 
     @Override
-	public Resource loadAsResource(String filename) {
-		try {
-			Path file = load(filename);
-			Resource resource = new UrlResource(file.toUri());
-			if (resource.exists() || resource.isReadable()) {
-				return resource;
-			}
-			else {
-				throw new StorageFileNotFoundException(
-						"Could not read file: " + filename);
-
-			}
-		}
-		catch (MalformedURLException e) {
-			throw new StorageFileNotFoundException("Could not read file: " + filename, e);
-		}
-	}
+    public Path load(String filename) {
+        return rootLocation.resolve(filename);
+    }
 
     @Override
-	public void init() {
-		try {
-			Files.createDirectories(rootLocation);
-		}
-		catch (IOException e) {
-			throw new StorageException("Could not initialize storage", e);
-		}
-	}
+    public Resource loadAsResource(String filename) {
+        try {
+            Path file = load(filename);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new StorageFileNotFoundException(
+                        "Could not read file: " + filename);
+
+            }
+        } catch (MalformedURLException e) {
+            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+        }
+    }
 
     @Override
-	public void deleteAll() {
-		FileSystemUtils.deleteRecursively(rootLocation.toFile());
-	}
+    public void init() {
+        try {
+            Files.createDirectories(rootLocation);
+        } catch (IOException e) {
+            throw new StorageException("Could not initialize storage", e);
+        }
+    }
+
+    @Override
+    public boolean delete(String filename) {
+        try {
+            Image image = imageRepository.findByImageName(filename)
+                    .orElseThrow(() -> new StorageFileNotFoundException("Image not found in the database"));
+            imageRepository.delete(image);
+            Path file = rootLocation.resolve(filename);
+            return Files.deleteIfExists(file);
+        } catch (IOException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        FileSystemUtils.deleteRecursively(rootLocation.toFile());
+    }
 }

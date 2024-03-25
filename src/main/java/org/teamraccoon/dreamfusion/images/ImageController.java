@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,8 @@ public class ImageController {
     IStorageService service;
 
     @PostMapping(path = "/images/uploadImages/{id}")
-    ResponseEntity<ResponseMessage> uploadImages(@PathVariable("id") @NonNull Long id, @RequestParam("file") MultipartFile file, @RequestParam("files") MultipartFile[] files) {
+    ResponseEntity<ResponseMessage> uploadImages(@PathVariable("id") @NonNull Long id,
+            @RequestParam("file") MultipartFile file, @RequestParam("files") MultipartFile[] files) {
 
         String message = "";
 
@@ -54,15 +56,35 @@ public class ImageController {
     }
 
     @GetMapping("/images/{filename:.+}")
-	@ResponseBody
-	public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
-		Resource file = service.loadAsResource(filename);
+        Resource file = service.loadAsResource(filename);
 
-		if (file == null)
-			return ResponseEntity.notFound().build();
+        if (file == null)
+            return ResponseEntity.notFound().build();
 
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment; filename=\"" + file.getFilename() + "\"").body(file);
-	}
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+    @DeleteMapping("/images/{filename:.+}")
+    public ResponseEntity<ResponseMessage> deleteFile(@PathVariable String filename) {
+        String message = "";
+
+        try {
+            boolean existed = service.delete(filename);
+
+            if (existed) {
+                message = "Delete the file successfully: " + filename;
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+            }
+
+            message = "The file does not exist!";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(message));
+        } catch (Exception e) {
+            message = "Could not delete the file: " + filename + ". Error: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseMessage(message));
+        }
+    }
 }
