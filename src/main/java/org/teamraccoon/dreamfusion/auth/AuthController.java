@@ -1,4 +1,4 @@
-package org.teamraccoon.dreamfusion.config;
+package org.teamraccoon.dreamfusion.auth;
 
 import java.util.HashMap;
 import java.util.Map;
