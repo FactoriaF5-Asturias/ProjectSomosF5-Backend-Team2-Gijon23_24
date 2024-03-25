@@ -21,26 +21,18 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
   @Override
   public void commence(HttpServletRequest request, HttpServletResponse response,
       org.springframework.security.core.AuthenticationException authException) throws IOException, ServletException {
-      // Configurar la respuesta HTTP
+  
       response.addHeader("WWW-Authenticate", "Basic realm");
       response.setContentType(MediaType.APPLICATION_JSON_VALUE);
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-      // Crear un objeto de error personalizado
       Map<String, String> error = new HashMap<>();
       error.put("error", "Autenticación fallida");
 
-      // Escribir el objeto de error en la respuesta
       OutputStream responseStream = response.getOutputStream();
       ObjectMapper mapper = new ObjectMapper();
       mapper.writeValue(responseStream, error);
       responseStream.flush();
   }
-
-  // @Override
-  // public void afterPropertiesSet(){
-  //    setRealmName("Spring Security");
-  //    super.afterPropertiesSet()
-  // }
   
 }
