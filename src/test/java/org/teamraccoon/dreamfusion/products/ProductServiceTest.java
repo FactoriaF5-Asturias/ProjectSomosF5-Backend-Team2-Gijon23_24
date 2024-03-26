@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.teamraccoon.dreamfusion.categories.CategoryRepository;
+import org.teamraccoon.dreamfusion.facades.product.ProductFacade;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
@@ -30,9 +31,12 @@ public class ProductServiceTest {
     @Mock
     CategoryRepository categoryRepository;
 
+    @Mock
+    ProductFacade productFacade;
+
     @BeforeEach
     void setUp() {
-        this.service = new ProductService(repository, categoryRepository);
+        this.service = new ProductService(repository, categoryRepository, productFacade);
     }
 
     @Test
@@ -70,16 +74,6 @@ public class ProductServiceTest {
 
         assertThat(product, is(goku));
     }
-
-    // @Test
-    // void testShouldSaveNewProduct() throws Exception {
-    //     ProductDTO gokuDTO = ProductDTO.builder().productName("Goku").build();
-        
-    //     when(repository.save(gokuDTO)).thenReturn(gokuDTO);
-    //     Product result = service.save(gokuDTO);
-
-    //     assertThat(result, contains(gokuDTO));
-    // }
 
     @Test
     void testShouldReturnProductNotFound() {

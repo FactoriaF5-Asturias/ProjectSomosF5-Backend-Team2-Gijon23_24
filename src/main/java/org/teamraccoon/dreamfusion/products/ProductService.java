@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.teamraccoon.dreamfusion.categories.Category;
 import org.teamraccoon.dreamfusion.categories.CategoryNotFoundException;
 import org.teamraccoon.dreamfusion.categories.CategoryRepository;
+import org.teamraccoon.dreamfusion.facades.product.ProductFacade;
 import org.teamraccoon.dreamfusion.generic.IGenericFullService;
 import org.teamraccoon.dreamfusion.messages.Message;
 
@@ -17,10 +18,13 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
 
     ProductRepository repository;
     CategoryRepository categoryRepository;
+    ProductFacade productFacade;
 
-    public ProductService(ProductRepository repository, CategoryRepository categoryRepository) {
+    public ProductService(ProductRepository repository, CategoryRepository categoryRepository,
+            ProductFacade productFacade) {
         this.repository = repository;
         this.categoryRepository = categoryRepository;
+        this.productFacade = productFacade;
     }
 
     @Override
@@ -87,16 +91,12 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
 
     @Override
     public Message delete(@NonNull Long id) throws Exception {
-        
-        Product product = repository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-        String productName = product.getProductName();
-
-        repository.delete(product);
+        String deleteResponse = productFacade.delete(id);
 
         Message message = new Message();
 
-        message.createMessage("Product with the name '" + productName + "' is deleted from the products table");
+        message.createMessage(deleteResponse);
 
         return message;
     }

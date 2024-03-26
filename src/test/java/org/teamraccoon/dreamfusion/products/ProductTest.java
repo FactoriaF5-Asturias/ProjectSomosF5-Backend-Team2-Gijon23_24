@@ -40,7 +40,7 @@ public class ProductTest {
     @Test
     void testProductHas6Attributes() {
         Field[] fields = product.getClass().getDeclaredFields();
-        assertThat(fields.length, is(7));
+        assertThat(fields.length, is(6));
     }
 
     @Test
