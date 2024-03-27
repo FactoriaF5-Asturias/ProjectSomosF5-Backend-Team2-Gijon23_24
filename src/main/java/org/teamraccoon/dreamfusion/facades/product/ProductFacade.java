@@ -1,55 +1,28 @@
 package org.teamraccoon.dreamfusion.facades.product;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import org.springframework.stereotype.Component;
-import org.teamraccoon.dreamfusion.config.StorageProperties;
-import org.teamraccoon.dreamfusion.generic.IDeleteProductFacade;
-import org.teamraccoon.dreamfusion.images.Image;
-import org.teamraccoon.dreamfusion.images.ImageRepository;
-import org.teamraccoon.dreamfusion.products.Product;
-import org.teamraccoon.dreamfusion.products.ProductNotFoundException;
-import org.teamraccoon.dreamfusion.products.ProductRepository;
+import org.teamraccoon.dreamfusion.generic.IProductFacade;
 
 @Component
-public class ProductFacade implements IDeleteProductFacade{
+public class ProductFacade implements IProductFacade{
 
-    ProductRepository productRepository;
-    ImageRepository imageRepository;
-    private final Path rootLocation;
+    ImageDelete imageDelete;
+    ProductDelete productDelete;
 
-    public ProductFacade(ProductRepository productRepository, ImageRepository imageRepository, StorageProperties properties) {
-        this.productRepository = productRepository;
-        this.imageRepository = imageRepository;
-        this.rootLocation = Paths.get(properties.getLocation());
+    public ProductFacade(ImageDelete imageDelete, ProductDelete productDelete) {
+        this.imageDelete = imageDelete;
+        this.productDelete = productDelete;
     }
 
-
-
     @Override
-    public String delete(Long id) {
+    public String delete(String type, Long id) {
 
-        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        String response = "";
 
-        if (product.getImages() != null) {
-            for (Image image : product.getImages()) {
-                try {
-                    Path file = rootLocation.resolve(image.getImageName());
-                    Files.deleteIfExists(file);
-                } catch (IOException e) {
-                    throw new RuntimeException("Error: " + e.getMessage());
-                }
-            }
-        }
+        if (type == "image") response = imageDelete.delete(id);
+        if (type == "product") response = productDelete.delete(id);
 
-        String productName = product.getProductName();
-
-        productRepository.delete(product);
-
-        return "Product '" + productName +  "' and corresponging files are deleted successfully";
+        return response;
     }
     
 }
