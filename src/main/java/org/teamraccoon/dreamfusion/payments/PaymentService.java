@@ -1,36 +1,24 @@
 package org.teamraccoon.dreamfusion.payments;
 
 import org.springframework.stereotype.Service;
+import org.teamraccoon.dreamfusion.config.payments.stripe.StripeConfiguration;
+import org.teamraccoon.dreamfusion.facades.payments.PaymentFacade;
 
-import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.PaymentIntent;
-import com.stripe.param.PaymentIntentCreateParams;
+
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class PaymentService {
 
-    public PaymentResponse createPaymentIntent(Payment payment) throws StripeException {
+    StripeConfiguration stripeConfig;
+    PaymentFacade paymentFacade;
 
-        Stripe.apiKey = System.getenv("STRIPE_SECRET_KEY");
+    public PaymentResponse createPaymentIntent(String paymentProvider, PaymentRequest payment) throws StripeException {
 
-        PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                .setAmount(Calculator.calculateOrderAmount(payment.getItems()))
-                .setCurrency("eur")
-                // In the latest version of the API, specifying the `automatic_payment_methods`
-                // parameter is optional because Stripe enables its functionality by default.
-                .setAutomaticPaymentMethods(
-                        PaymentIntentCreateParams.AutomaticPaymentMethods
-                                .builder()
-                                .setEnabled(true)
-                                .build())
-                .build();
+        PaymentResponse response = paymentFacade.createPaymentIntent("stripe", payment);
 
-        // Create a PaymentIntent with the order amount and currency
-        PaymentIntent paymentIntent = PaymentIntent.create(params);
-
-        PaymentResponse paymentResponse = new PaymentResponse(paymentIntent.getClientSecret());
-
-        return paymentResponse;
+        return response;
     }
 }

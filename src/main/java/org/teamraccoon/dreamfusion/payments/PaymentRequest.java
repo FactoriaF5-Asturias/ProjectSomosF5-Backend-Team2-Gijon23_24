@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Payment {
+public class PaymentRequest {
     PaymentItem[] items;
 }
