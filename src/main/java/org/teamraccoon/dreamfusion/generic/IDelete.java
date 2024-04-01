@@ -1,5 +1,5 @@
 package org.teamraccoon.dreamfusion.generic;
 
-public interface IDeleteProductFacade {
+public interface IDelete {
     String delete(Long productId);
 }

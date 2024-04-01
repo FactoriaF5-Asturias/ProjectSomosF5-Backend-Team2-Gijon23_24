@@ -92,11 +92,12 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
     @Override
     public Message delete(@NonNull Long id) throws Exception {
 
-        String deleteResponse = productFacade.delete(id);
+        String deleteImageResponse = productFacade.delete("image", id);
+        String deleteProductResponse = productFacade.delete("product", id);
 
         Message message = new Message();
 
-        message.createMessage(deleteResponse);
+        message.createMessage(deleteProductResponse + " " + deleteImageResponse);
 
         return message;
     }
