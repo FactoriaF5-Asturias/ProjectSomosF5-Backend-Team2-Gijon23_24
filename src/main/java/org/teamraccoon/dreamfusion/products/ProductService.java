@@ -11,10 +11,11 @@ import org.teamraccoon.dreamfusion.categories.CategoryNotFoundException;
 import org.teamraccoon.dreamfusion.categories.CategoryRepository;
 import org.teamraccoon.dreamfusion.facades.product.ProductFacade;
 import org.teamraccoon.dreamfusion.generic.IGenericFullService;
+import org.teamraccoon.dreamfusion.generic.IGenericSearchService;
 import org.teamraccoon.dreamfusion.messages.Message;
 
 @Service
-public class ProductService implements IGenericFullService<Product, ProductDTO> {
+public class ProductService implements IGenericFullService<Product, ProductDTO>, IGenericSearchService<Product> {
 
     ProductRepository repository;
     CategoryRepository categoryRepository;
@@ -43,6 +44,13 @@ public class ProductService implements IGenericFullService<Product, ProductDTO> 
     @Override
     public Product getByName(String name) throws Exception {
         Product product = repository.findByProductName(name).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        return product;
+    }
+
+    @Override
+    public List<Product> getManyByName(String name) throws Exception {
+        List<Product> product = repository.findByProductNameContaining(name).orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         return product;
     }
