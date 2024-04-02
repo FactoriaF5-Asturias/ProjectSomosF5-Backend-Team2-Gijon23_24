@@ -59,6 +59,14 @@ public class ProductController {
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(products);
     }
 
+    @GetMapping(path = "getManyByCategoryName/{name}")
+    public ResponseEntity<List<Product>> findManyByCategoryName(@PathVariable("name") @NonNull String name) throws Exception {
+
+        List<Product> products = searchService.getManyByCategoryName(name);
+
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(products);
+    }
+
     @PostMapping(path = "")
     public ResponseEntity<Product> create(@RequestBody ProductDTO product) {
 
