@@ -24,6 +24,7 @@ public class ProfileService implements IGenericEditService<ProfileDTO, Profile>,
         
         try{
             Profile newProfile = Profile.builder()
+                .user(null)
                 .email(profileDTO.getEmail())
                 .firstName(profileDTO.getFirstName())
                 .lastName(profileDTO.getLastName())
