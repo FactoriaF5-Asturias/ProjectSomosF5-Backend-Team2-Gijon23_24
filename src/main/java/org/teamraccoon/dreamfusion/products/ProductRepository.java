@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 public interface ProductRepository extends JpaRepository<Product,Long> {
 
     public Optional<Product> findByProductName(String name);
-    public Optional<List<Product>> findByProductNameContaining(String name);
-    @Query("SELECT p FROM Product p JOIN p.categories c WHERE c.categoryName = :categoryName")
-    Optional <List<Product>> findProductsByCategoryName(@Param("categoryName") String categoryName);
+    public Optional<List<Product>> findByProductNameContainingIgnoreCase(String name);
+    @Query("SELECT p FROM Product p JOIN p.categories c WHERE LOWER(c.categoryName) = LOWER(:categoryName)")
+    Optional <List<Product>> findProductsByCategoryNameIgnoreCase(@Param("categoryName") String categoryName);
 
 }

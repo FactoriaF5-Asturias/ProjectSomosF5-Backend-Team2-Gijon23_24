@@ -50,14 +50,14 @@ public class ProductService implements IGenericFullService<Product, ProductDTO>,
 
     @Override
     public List<Product> getManyByName(String name) throws Exception {
-        List<Product> product = repository.findByProductNameContaining(name).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        List<Product> product = repository.findByProductNameContainingIgnoreCase(name).orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         return product;
     }
 
     @Override
     public List<Product> getManyByCategoryName(String name) throws Exception {
-        List<Product> product = repository.findProductsByCategoryName(name).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        List<Product> product = repository.findProductsByCategoryNameIgnoreCase(name).orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         return product;
     }
