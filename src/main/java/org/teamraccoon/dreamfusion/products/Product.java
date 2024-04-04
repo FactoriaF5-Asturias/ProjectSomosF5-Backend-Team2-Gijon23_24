@@ -20,7 +20,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,11 +28,20 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Table(name = "products")
 public class Product {
+
+    @Builder
+    public Product(Long id, String productName, String productDescription, Set<Image> images, float price,
+            Set<Category> categories) {
+        this.id = id;
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.images = images;
+        this.price = price;
+        this.categories = categories;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

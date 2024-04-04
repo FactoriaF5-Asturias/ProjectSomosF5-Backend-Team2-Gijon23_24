@@ -95,3 +95,7 @@ INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (def
 INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'litofania-estrella-bebe.jpg', true, 13);
 INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'litofania-prince.jpg', true, 14);
 INSERT INTO images (id_image, image_name, is_main_image, product_id) VALUES (default, 'litofania-gato.jpg', true, 15);
+
+/*Favoritos*/
+
+INSERT INTO fav_products_profiles (product_id, profile_id) VALUES (1, 1);
