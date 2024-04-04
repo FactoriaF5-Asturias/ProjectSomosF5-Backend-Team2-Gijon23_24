@@ -6,6 +6,7 @@ INSERT INTO roles (id_role, name) VALUES (default, 'ROLE_USER');
 INSERT INTO users(id_user, username, password) VALUES (default, 'admin', '$2a$12$xOx5K0CaHRWkRgaZBRHvZ.tcrVC/AeA3sIjCySnHKk6ZEM9kmuIyO');
 
 INSERT INTO users(id_user, username, password) VALUES (default, 'user1', '$2a$12$xOx5K0CaHRWkRgaZBRHvZ.tcrVC/AeA3sIjCySnHKk6ZEM9kmuIyO');
+
 INSERT INTO users(id_user, username, password) VALUES (default, 'user2', '$2a$12$xOx5K0CaHRWkRgaZBRHvZ.tcrVC/AeA3sIjCySnHKk6ZEM9kmuIyO');
 
 /*Vinculed roles and user*/
@@ -14,7 +15,11 @@ INSERT INTO role_users (role_id, user_id) VALUES (2, 2);
 INSERT INTO role_users (role_id, user_id) VALUES (2, 3);
 
 /*Profile default*/
-INSERT INTO profiles(id_profile, user_id, email, first_Name, last_Name, address, postal_Code, number_Phone) VALUES(default, 1, 'correo@correo.com', 'Nombre', 'apellidos', 'direccion', '88888', '6465464');
+INSERT INTO profiles(id_profile, user_id, email, first_Name, last_Name, address, postal_Code, number_Phone) VALUES(default, 1, 'admin', 'Juan', 'apellidos1', 'direccion1', '88888', '12312323');
+
+INSERT INTO profiles(id_profile, user_id, email, first_Name, last_Name, address, postal_Code, number_Phone) VALUES(default, 2, 'user1', 'Mark', 'apellidos2', 'direccion2', '11111', '32132132');
+
+INSERT INTO profiles(id_profile, user_id, email, first_Name, last_Name, address, postal_Code, number_Phone) VALUES(default, 3, 'user2', 'Nico', 'apellidos3', 'direccion3', '22222', '21212111');
 
 /*Categories*/
 
