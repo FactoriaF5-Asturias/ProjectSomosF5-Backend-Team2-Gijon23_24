@@ -1,18 +1,26 @@
 package org.teamraccoon.dreamfusion.profiles;
 
+import java.util.Set;
+
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.teamraccoon.dreamfusion.generic.IGenericEditService;
 import org.teamraccoon.dreamfusion.generic.IGenericGetService;
+import org.teamraccoon.dreamfusion.products.Product;
+import org.teamraccoon.dreamfusion.products.ProductNotFoundException;
+import org.teamraccoon.dreamfusion.products.ProductRepository;
+
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class ProfileService implements IGenericEditService<ProfileDTO, Profile>, IGenericGetService<Profile> {
 
     ProfileRepository repository;
-
-    public ProfileService(ProfileRepository repository) {
-        this.repository = repository;
-    }
+    ProductRepository productRepository;
 
     public Profile getById(@NonNull Long id)throws Exception{
         Profile profile = repository.findById(id).orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
@@ -35,11 +43,28 @@ public class ProfileService implements IGenericEditService<ProfileDTO, Profile>,
        return repository.save(profile);
     }
 
-    @Override
-    public Profile save(ProfileDTO type) throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
-    }
+    public Profile updateFavorites(Long productId) throws Exception {
+        
+        SecurityContext contextHolder = SecurityContextHolder.getContext();
+        Authentication auth = contextHolder.getAuthentication();
+        
+        Profile updatingProfile = repository.findByEmail(auth.getName()).orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
 
-    
+        Product newProduct = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        Set<Product> favoriteProducts = updatingProfile.getFavorites();
+
+        if (favoriteProducts.contains(newProduct)) {
+            favoriteProducts.remove(newProduct);
+        } else {
+            favoriteProducts.add(newProduct);
+        }
+
+        updatingProfile.setFavorites(favoriteProducts);
+
+        Profile updatedProfile = repository.save(updatingProfile);
+        
+        return updatedProfile;
+    }
     
 }

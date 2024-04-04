@@ -5,6 +5,8 @@ import java.util.Set;
 import org.teamraccoon.dreamfusion.products.Product;
 import org.teamraccoon.dreamfusion.users.User;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +41,7 @@ public class Profile {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id_user")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User user;
 
     private String email;
