@@ -5,23 +5,23 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.teamraccoon.dreamfusion.facades.encryptations.EncoderFacade;
+import org.teamraccoon.dreamfusion.profiles.Profile;
+import org.teamraccoon.dreamfusion.profiles.ProfileRepository;
 import org.teamraccoon.dreamfusion.roles.Role;
 import org.teamraccoon.dreamfusion.roles.RoleService;
 import org.teamraccoon.dreamfusion.users.User;
 import org.teamraccoon.dreamfusion.users.UserRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class RegisterService {
 
     UserRepository userRepository;
     RoleService roleService;
     EncoderFacade encoder;
-
-    public RegisterService(UserRepository userRepository, RoleService roleService, EncoderFacade encoder) {
-        this.userRepository = userRepository;
-        this.roleService = roleService;
-        this.encoder = encoder;
-    }
+    ProfileRepository profileRepository;
 
     public String save(User newUser) {
 
@@ -33,7 +33,19 @@ public class RegisterService {
         newUser.setPassword(passwordEncoded);
         assignDefaultRole(newUser);
 
+        Profile newProfile = Profile.builder()
+                .user(newUser)
+                .email(newUser.getUsername())
+                .firstName("")
+                .lastName("")
+                .address("")
+                .postalCode("")
+                .numberPhone("")
+                .build();
+
         userRepository.save(newUser);
+
+        profileRepository.save(newProfile);
 
         return "user stored successfully :" + newUser.getUsername();
 
