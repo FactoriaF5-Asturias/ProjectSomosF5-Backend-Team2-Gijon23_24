@@ -41,6 +41,8 @@ public class RegisterService {
                 .address("")
                 .postalCode("")
                 .numberPhone("")
+                .city("")
+                .province("")
                 .build();
 
         userRepository.save(newUser);
