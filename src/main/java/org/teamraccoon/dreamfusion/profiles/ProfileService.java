@@ -29,6 +29,8 @@ public class ProfileService implements IGenericEditService<ProfileDTO, Profile>,
        profile.setAddress(profileDTO.getAddress());
        profile.setNumberPhone(profileDTO.getNumberPhone());
        profile.setPostalCode(profileDTO.getPostalCode());
+       profile.setCity(profileDTO.getCity());
+       profile.setProvince(profileDTO.getProvince());
 
        return repository.save(profile);
     }
