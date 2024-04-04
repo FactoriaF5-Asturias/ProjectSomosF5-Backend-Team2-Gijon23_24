@@ -20,48 +20,22 @@ public class ProfileService implements IGenericEditService<ProfileDTO, Profile>,
         return profile;
     }
 
-    public Profile save(ProfileDTO profileDTO) throws Exception {
-        
-        try{
-            Profile newProfile = Profile.builder()
-                .user(null)
-                .email(profileDTO.getEmail())
-                .firstName(profileDTO.getFirstName())
-                .lastName(profileDTO.getLastName())
-                .address(profileDTO.getAddress())
-                .postalCode(profileDTO.getPostalCode())
-                .numberPhone(profileDTO.getNumberPhone())
-                .build();
-
-            repository.save(newProfile);
-            System.out.println(newProfile);
-
-            Long profileTableQuantity = (long) repository.findAll().size();
-            Profile profile = repository.findById(profileTableQuantity).orElseThrow(() -> new ProfileNotFoundException("Not Found"));
-
-            return profile;
-
-        }catch(Exception e){
-            throw new Exception("Error al guardar" + e.getMessage());
-        }
-    }
-
-    public Profile delete(Long id){
-        Profile profileToDelete = repository.findById(id).orElseThrow(()-> new ProfileNotFoundException("Profile Not Found"));
-        repository.deleteById(id);
-
-        return profileToDelete;
-    }
-
     @Override
     public Profile update(ProfileDTO profileDTO, Long id) {
        Profile profile = repository.findById(id).orElseThrow(()-> new ProfileNotFoundException("Profile Not Found"));
 
+       profile.setFirstName(profileDTO.getFirstName());
+       profile.setLastName(profileDTO.getLastName());
        profile.setAddress(profileDTO.getAddress());
        profile.setNumberPhone(profileDTO.getNumberPhone());
        profile.setPostalCode(profileDTO.getPostalCode());
 
        return repository.save(profile);
+    }
+
+    @Override
+    public Profile save(ProfileDTO type) throws Exception {
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
 
     

@@ -7,6 +7,8 @@ import java.util.Set;
 import org.teamraccoon.dreamfusion.profiles.Profile;
 import org.teamraccoon.dreamfusion.roles.Role;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -41,6 +43,7 @@ public class User {
     private String username;
     private String password;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Profile profile;
 
