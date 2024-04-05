@@ -47,6 +47,7 @@ public class SecurityConfiguration {
 						.logoutUrl(endpoint + "/logout")
 						.deleteCookies("JSESSIONID"))
 				.authorizeHttpRequests(auth -> auth
+						.requestMatchers(HttpMethod.GET, "/").permitAll()
 						.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
 						.requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.POST, endpoint + "/users/register").permitAll()
