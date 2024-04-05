@@ -10,7 +10,7 @@ public class HomeController {
     @GetMapping(path = "")
     public String index() {
         
-        return "Hello PrintGo";
+        return "Hello PrintGo! Proyecto pedagógico Factoría F5.";
         
     }
     
