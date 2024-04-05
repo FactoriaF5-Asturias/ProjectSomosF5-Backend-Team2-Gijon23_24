@@ -1,6 +1,11 @@
 package org.teamraccoon.dreamfusion.profiles;
 
+import java.util.Set;
+
+import org.teamraccoon.dreamfusion.products.Product;
 import org.teamraccoon.dreamfusion.users.User;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,6 +15,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -34,6 +41,7 @@ public class Profile {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id_user")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User user;
 
     private String email;
@@ -44,4 +52,9 @@ public class Profile {
     private String province;
     private String postalCode;
     private String numberPhone;
+
+    @Column
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "fav_products_profiles", joinColumns = @JoinColumn(name = "profile_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    Set<Product> favorites;
 }
