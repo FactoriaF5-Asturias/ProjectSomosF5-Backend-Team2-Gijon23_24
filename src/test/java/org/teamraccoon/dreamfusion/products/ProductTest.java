@@ -11,12 +11,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.teamraccoon.dreamfusion.categories.Category;
 import org.teamraccoon.dreamfusion.images.Image;
+import org.teamraccoon.dreamfusion.profiles.Profile;
 
 public class ProductTest {
 
     Product product;
     Category category;
     Image image;
+    Profile profile;
 
     @BeforeEach
     void setUp() {
@@ -35,6 +37,7 @@ public class ProductTest {
         
         category.setCategoryName("Para Hogar");
         product = new Product(1L, "Superman", "Una figura de Superman en 3D", images, 12L, categories);
+
     }
 
     @Test
