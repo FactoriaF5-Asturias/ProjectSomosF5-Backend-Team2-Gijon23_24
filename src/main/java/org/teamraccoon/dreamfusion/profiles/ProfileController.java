@@ -39,5 +39,12 @@ public class ProfileController {
 
         return ResponseEntity.status(200).body(updatedProfile);
     }
+    @GetMapping(path = "/favorites/{id}")
+    public ResponseEntity<Profile> getFavorite(@PathVariable("id") Long id) throws Exception {
+        Profile profile = service.getFavoriteProfile(id); 
+        return ResponseEntity.status(200).body(profile);
+
+
+    }
     
 }
