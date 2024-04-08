@@ -1,0 +1,30 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      java: corretto21
+  build:
+    commands:
+      - echo Packaging JAR file...
+      - mvn package
+  post_build:
+    commands:
+      - echo Build complete.
+artifacts:
+  files:
+    - target/dreamfusion-0.0.1-SNAPSHOT.jar
+  discard-paths: yes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
