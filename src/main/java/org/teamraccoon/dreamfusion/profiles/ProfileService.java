@@ -66,5 +66,10 @@ public class ProfileService implements IGenericEditService<ProfileDTO, Profile>,
         
         return updatedProfile;
     }
+    public Profile getFavoriteProfile(Long id) {
+        // Retrieve the profile with the given ID from the repository
+        return repository.findById(id)
+                .orElseThrow(() -> new ProfileNotFoundException("Profile not found with ID: " + id));
+    }
     
 }

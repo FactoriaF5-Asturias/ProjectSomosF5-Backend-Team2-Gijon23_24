@@ -18,7 +18,11 @@ public class UserController {
 
     @GetMapping(path = "")
     public List<User> index(){
-        return service.getAll();
+        List<User> users = service.getAll();
+        // Aquí puedes ajustar la respuesta para incluir el ID del usuario
+        // Por ejemplo, podrías mapear los usuarios a un DTO que incluya solo los campos que deseas exponer
+        return users;
+       
     }
 
 }
