@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.teamraccoon.dreamfusion.users.User;
 import org.teamraccoon.dreamfusion.users.UserRepository;
-
+//Mark perdon pero tuve que modificar para poder pasar el user id a los favoritos
 @Controller
 @RequestMapping(path = "${api-endpoint}")
 public class AuthController {

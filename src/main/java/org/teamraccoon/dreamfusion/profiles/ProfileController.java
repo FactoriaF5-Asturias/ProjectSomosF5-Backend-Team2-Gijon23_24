@@ -43,6 +43,7 @@ public class ProfileController {
     public ResponseEntity<Profile> getFavorite(@PathVariable("id") Long id) throws Exception {
         Profile profile = service.getFavoriteProfile(id); 
         return ResponseEntity.status(200).body(profile);
+//Mark perdon pero tuve que modificar para poderhacer el get a los favoritos no se si esta bien en postman funciona bien 
 
 
     }
