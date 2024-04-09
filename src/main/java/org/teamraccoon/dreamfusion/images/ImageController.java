@@ -1,9 +1,5 @@
 package org.teamraccoon.dreamfusion.images;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -31,23 +27,18 @@ public class ImageController {
 
     @PostMapping(path = "/images/uploadImages/{id}")
     ResponseEntity<ResponseMessage> uploadImages(@PathVariable("id") @NonNull Long id,
-            @RequestParam("file") MultipartFile file, @RequestParam("files") MultipartFile[] files) {
+            @RequestParam(name = "file", required = false) MultipartFile file, @RequestParam("files") MultipartFile[] files) {
 
         String message = "";
 
         try {
-            String mainFilename = new String();
-            List<String> fileNames = new ArrayList<>();
 
-            service.saveMainImage(id, file);
-            mainFilename = file.getOriginalFilename();
+            if (file != null) {
+                service.saveMainImage(id, file);
+            }
 
             service.saveImages(id, files);
-            Arrays.asList(files).stream().forEach(image -> {
-                fileNames.add(image.getOriginalFilename());
-            });
-
-            message = "File with the name " + mainFilename + " and files " + fileNames + " are uploaded successfully: ";
+            message = "Files are uploaded successfully.";
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
             message = "Fail to upload files!";
