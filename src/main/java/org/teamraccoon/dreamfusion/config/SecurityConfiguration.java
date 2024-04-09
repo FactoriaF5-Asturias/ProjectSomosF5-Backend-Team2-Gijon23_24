@@ -59,6 +59,7 @@ public class SecurityConfiguration {
 						.requestMatchers(HttpMethod.DELETE, endpoint + "/images/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PUT, endpoint + "/images/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.POST, endpoint + "/images/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, endpoint + "/imgs/**").permitAll()
 						.requestMatchers(HttpMethod.GET, endpoint + "/categories/**").permitAll()
 						.requestMatchers(HttpMethod.DELETE, endpoint + "/categories/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PUT, endpoint + "/categories/**").hasRole("ADMIN")
