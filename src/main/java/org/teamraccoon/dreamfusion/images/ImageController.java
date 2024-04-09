@@ -55,7 +55,7 @@ public class ImageController {
         }
     }
 
-    @GetMapping("/images/{filename:.+}")
+    @GetMapping("/images/getAsResource/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
