@@ -52,7 +52,7 @@ public class ImageService implements IStorageService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-        Image searchedMainimage = product.getImages().stream().filter((image -> image.isMainImage())).findFirst().orElse(null);
+        Image searchedMainimage = product.getImages().stream().filter(image -> image.isMainImage()).findFirst().orElse(null);
 
         if (file != null && !product.getImages().contains(searchedMainimage)) {
             String uniqueName = createUniqueName(file);
