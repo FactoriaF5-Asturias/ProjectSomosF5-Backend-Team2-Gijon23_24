@@ -32,16 +32,12 @@ public class ImageController {
         String message = "";
 
         try {
-
-            if (file != null) {
-                service.saveMainImage(id, file);
-            }
-
+            service.saveMainImage(id, file);
             service.saveImages(id, files);
             message = "Files are uploaded successfully.";
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
-            message = "Fail to upload files!";
+            message = e.getMessage();
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }
     }
