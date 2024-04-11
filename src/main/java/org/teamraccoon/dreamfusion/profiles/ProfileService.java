@@ -28,6 +28,11 @@ public class ProfileService implements IGenericEditService<ProfileDTO, Profile>,
         return profile;
     }
 
+    public Profile getByEmail(@NonNull String email)throws Exception{
+        Profile profile = repository.findByEmail(email).orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
+        return profile;
+    }
+
     @Override
     public Profile update(ProfileDTO profileDTO, Long id) {
        Profile profile = repository.findById(id).orElseThrow(()-> new ProfileNotFoundException("Profile Not Found"));
