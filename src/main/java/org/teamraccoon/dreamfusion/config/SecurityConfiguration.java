@@ -47,15 +47,23 @@ public class SecurityConfiguration {
 						.logoutUrl(endpoint + "/logout")
 						.deleteCookies("JSESSIONID"))
 				.authorizeHttpRequests(auth -> auth
+						.requestMatchers(HttpMethod.GET, "/").permitAll()
 						.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
 						.requestMatchers(HttpMethod.GET, endpoint + "/login").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.POST, endpoint + "/users/register").permitAll()
 						.requestMatchers(HttpMethod.GET, endpoint + "/products/**").permitAll()
+						.requestMatchers(HttpMethod.DELETE, endpoint + "/products/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, endpoint + "/products/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, endpoint + "/products/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, endpoint + "/images/**").permitAll()
-						.requestMatchers(endpoint + "/images/**").hasRole("ADMIN")
-						.requestMatchers(endpoint + "/products/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, endpoint + "/images/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, endpoint + "/images/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, endpoint + "/images/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, endpoint + "/imgs/**").permitAll()
 						.requestMatchers(HttpMethod.GET, endpoint + "/categories/**").permitAll()
-						.requestMatchers(endpoint + "/categories/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, endpoint + "/categories/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, endpoint + "/categories/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, endpoint + "/categories/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, endpoint + "/profiles/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.POST, endpoint + "/profiles").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.PUT, endpoint + "/profiles/**").hasAnyRole("USER", "ADMIN")
@@ -75,7 +83,7 @@ public class SecurityConfiguration {
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowCredentials(true);
-		configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://printgo.factoriaf5asturias.org/"));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
 		configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
