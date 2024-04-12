@@ -26,6 +26,12 @@ public class ProfileController {
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(profile);
     }
 
+    @GetMapping(path = "/getByEmail/{email}")
+    public ResponseEntity<Profile> byEmail(@NonNull @PathVariable("email") String email)throws Exception{
+        Profile profile = service.getByEmail(email);
+        return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(profile);
+    }
+
     @PutMapping(path = "/{id}")
     public ResponseEntity<Profile> update(@PathVariable("id") Long id, @RequestBody ProfileDTO profileDTO) throws Exception{
         Profile profile = service.update(profileDTO, id);
