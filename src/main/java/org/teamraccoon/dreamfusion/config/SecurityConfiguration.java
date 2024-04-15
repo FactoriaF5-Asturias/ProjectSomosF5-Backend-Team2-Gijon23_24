@@ -68,7 +68,7 @@ public class SecurityConfiguration {
 						.requestMatchers(HttpMethod.POST, endpoint + "/profiles").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.PUT, endpoint + "/profiles/**").hasAnyRole("USER", "ADMIN")
 						.requestMatchers(HttpMethod.DELETE, endpoint + "/profiles").hasAnyRole("USER", "ADMIN")
-						.requestMatchers(HttpMethod.POST, endpoint + "/payments/create-payment-intent/stripe").hasAnyRole("USER", "ADMIN")
+						.requestMatchers(HttpMethod.POST, endpoint + "/payments/create-payment-intent/**").hasAnyRole("USER", "ADMIN")
 						.anyRequest().authenticated())
 				.userDetailsService(jpaUserDetailsService)
 				.httpBasic(basic -> basic.authenticationEntryPoint(CustomAuthenticationEntryPoint))
