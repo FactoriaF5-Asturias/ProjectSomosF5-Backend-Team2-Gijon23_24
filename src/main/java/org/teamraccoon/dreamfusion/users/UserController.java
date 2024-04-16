@@ -2,10 +2,10 @@ package org.teamraccoon.dreamfusion.users;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,16 +25,19 @@ public class UserController {
         return service.getAll();
     }
 
-    @PutMapping("/password/{id}")
-    public ResponseEntity<?> updatePassword(@PathVariable Long id, @RequestBody User user, @RequestBody UserDto newPassword) {
-        try {
-            User updatedUser = service.changePassword(id, user.getPassword(), newPassword);
-            return ResponseEntity.ok(updatedUser);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @PostMapping("/UpdatePassword")
+    public ResponseEntity<String> changePassword(@RequestBody RequestChangePassword request)throws Exception {
+        
+        UserDto dto = new UserDto();
+        dto.setId(request.getUserId());
+        dto.setPassword(request.getCurrentPassword());
+
+        int check = service.changePassword(dto, request.getNewPassword());
+
+        if (check == 1) {
+            return ResponseEntity.status(HttpStatus.OK).body("Contraseña actualizada");
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al actualizar");
     }
 }
 

@@ -2,21 +2,26 @@ package org.teamraccoon.dreamfusion.users;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.teamraccoon.dreamfusion.facades.encryptations.EncoderFacade;
 import org.teamraccoon.dreamfusion.profiles.ProfileRepository;
+import org.teamraccoon.dreamfusion.utilities.UseCheckService;
 
 @Service
 public class UserService {
 
     UserRepository repository;
     ProfileRepository profileRepository;
-    EncoderFacade enconde;
+    UseCheckService useCheckPassword;
+    BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository, ProfileRepository profileRepository, EncoderFacade enconde) {
+    public UserService(UserRepository repository, ProfileRepository profileRepository,
+            UseCheckService useCheckPassword) {
         this.repository = repository;
         this.profileRepository = profileRepository;
-        this.enconde = enconde;
+        this.useCheckPassword = useCheckPassword;
     }
 
     public List<User> getAll(){
@@ -25,17 +30,18 @@ public class UserService {
         return users;
     }
 
-    public User changePassword(Long id, String currentPassword, UserDto newPassword) throws Exception{
-        User user = repository.findById(id).orElseThrow(() -> new UserNotFoundException("user not found"));
+    public int changePassword(UserDto dto, String newPassword) throws Exception{
+        Long id = dto.getId();
+        String password = dto.getPassword();
 
-        String passwordEncoded = enconde.encode("bcrypt", newPassword.password);
+        boolean checkPassword = useCheckPassword.isTruePassword(id, password);
 
-        if (currentPassword == passwordEncoded) {
-            user.setPassword(passwordEncoded);
+        if (checkPassword) {
+            repository.changeUserPassword(passwordEncoder.encode(newPassword));
+
+            return 1;
         }
-        
-        repository.save(user);
-        return user;
+        return 0;
     }
     
     public User delete(Long id)throws Exception{
