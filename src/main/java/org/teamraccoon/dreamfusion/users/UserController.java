@@ -2,7 +2,12 @@ package org.teamraccoon.dreamfusion.users;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,4 +26,11 @@ public class UserController {
         return service.getAll();
     }
 
+    @PutMapping("/updatePassword/{id}")
+    public ResponseEntity<User> changePassword(@PathVariable("id") Long id, @RequestBody UserDto userDto)throws Exception {
+        User user = service.changePassword(userDto, id);
+        
+        return ResponseEntity.accepted().body(user);
+    }
 }
+
