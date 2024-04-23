@@ -48,7 +48,7 @@ public class ProfileService implements IGenericEditService<ProfileDTO, Profile>,
        return repository.save(profile);
     }
 
-    public Profile updateFavorites(Long productId) throws Exception {
+    public String updateFavorites(Long productId) throws Exception {
         
         SecurityContext contextHolder = SecurityContextHolder.getContext();
         Authentication auth = contextHolder.getAuthentication();
@@ -59,17 +59,21 @@ public class ProfileService implements IGenericEditService<ProfileDTO, Profile>,
 
         Set<Product> favoriteProducts = updatingProfile.getFavorites();
 
+        String message = "";
+
         if (favoriteProducts.contains(newProduct)) {
             favoriteProducts.remove(newProduct);
+            message = "Product is removed from favorites";
         } else {
             favoriteProducts.add(newProduct);
+            message = "Product is added to favorites";
         }
 
         updatingProfile.setFavorites(favoriteProducts);
 
-        Profile updatedProfile = repository.save(updatingProfile);
+        repository.save(updatingProfile);
         
-        return updatedProfile;
+        return message;
     }
     
 }

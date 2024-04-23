@@ -39,11 +39,11 @@ public class ProfileController {
     }
 
     @PutMapping(path = "/update-favorites/{id}")
-    public ResponseEntity<Profile> addRemoveFavorite(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<String> addRemoveFavorite(@PathVariable("id") Long id) throws Exception {
 
-        Profile updatedProfile = service.updateFavorites(id);
+        String message = service.updateFavorites(id);
 
-        return ResponseEntity.status(200).body(updatedProfile);
+        return ResponseEntity.status(200).body(message);
     }
     
 }
