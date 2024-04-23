@@ -34,8 +34,7 @@ public class ImageService implements IStorageService {
     Time time;
     private final Path rootLocation;
 
-    public ImageService(ImageRepository imageRepository, ProductRepository productRepository, Time time,
-            StorageProperties properties) {
+    public ImageService(ImageRepository imageRepository, ProductRepository productRepository, Time time, StorageProperties properties) {
         if (properties.getLocation().trim().length() == 0) {
             throw new StorageException("File upload location can not be Empty.");
         }
