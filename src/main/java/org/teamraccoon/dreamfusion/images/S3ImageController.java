@@ -21,12 +21,13 @@ public class S3ImageController {
 
     @PostMapping(path = "/images/uploadToS3/{id}")
     ResponseEntity<ResponseMessage> uploadImages(@PathVariable("id") @NonNull Long id,
-            @RequestParam(name = "file", required = false) MultipartFile file) {
+            @RequestParam(name = "file", required = false) MultipartFile file, @RequestParam("files") MultipartFile[] files) {
 
         String message = "";
 
         try {
             service.saveMainImage(id, file);
+            service.saveImages(id, files);
             message = "Files are uploaded successfully.";
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {

@@ -3,6 +3,7 @@ package org.teamraccoon.dreamfusion.images;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ public class S3ImageService {
     ProductRepository productRepository;
     Time time;
     AWSConfiguration awsConfiguration;
+    String bucketName;
 
     public S3ImageService(ImageRepository imageRepository, ProductRepository productRepository, Time time,
             AWSConfiguration awsConfiguration) {
@@ -35,6 +37,7 @@ public class S3ImageService {
         this.productRepository = productRepository;
         this.time = time;
         this.awsConfiguration = awsConfiguration;
+        this.bucketName = awsConfiguration.getAwsBucket();
     }
 
     public void saveMainImage(@NonNull Long productId, MultipartFile file) {
@@ -48,11 +51,7 @@ public class S3ImageService {
         if (file != null && !product.getImages().contains(searchedMainimage)) {
             String uniqueName = createUniqueName(file);
 
-            Image newImage = Image.builder()
-                    .imageName(uniqueName)
-                    .isMainImage(true)
-                    .product(product)
-                    .build();
+            Image newImage = Image.builder().imageName(uniqueName).isMainImage(true).product(product).build();
 
             try (InputStream inputStream = file.getInputStream()) {
                 if (file.isEmpty()) {
@@ -61,18 +60,11 @@ public class S3ImageService {
 
                 Map<String, String> metadata = createMetadata(file);
 
-                String objectKey = uniqueName;
-                String bucketName = awsConfiguration.getAwsBucket();
-
-                PutObjectRequest putOb = PutObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(objectKey)
-                    .metadata(metadata)
-                    .build();
+                PutObjectRequest putOb = PutObjectRequest.builder().bucket(bucketName).key(uniqueName).metadata(metadata).build();
 
                 awsConfiguration.createS3Client().putObject(putOb, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
 
-                System.out.println("Successfully uploaded " + objectKey + " to bucket " + bucketName);
+                System.out.println("Successfully uploaded " + uniqueName + " to bucket " + bucketName);
                 imageRepository.save(newImage);
             } catch (IOException e) {
                 throw new RuntimeErrorException(null, "File" + uniqueName + "has not been saved");
@@ -80,6 +72,41 @@ public class S3ImageService {
 
         }
 
+    }
+
+    public void saveImages(@NonNull Long productId, MultipartFile[] files) {
+
+        Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        int imageCount = product.getImages().size();
+
+        if (imageCount + files.length > 5) {
+            throw new StorageException("The maximum number of files for one product is exceeded");
+        }
+
+        Arrays.asList(files).stream().forEach(file -> {
+            String uniqueName = createUniqueName(file);
+
+            Image newImage = Image.builder().imageName(uniqueName).isMainImage(false).product(product).build();
+
+            try (InputStream inputStream = file.getInputStream()) {
+                if (file.isEmpty()) {
+                    throw new StorageException("Failed to store empty file.");
+                }
+
+                Map<String, String> metadata = createMetadata(file);
+
+                PutObjectRequest putOb = PutObjectRequest.builder().bucket(bucketName).key(uniqueName).metadata(metadata).build();
+
+                awsConfiguration.createS3Client().putObject(putOb, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
+
+                System.out.println("Successfully uploaded " + uniqueName + " to bucket " + bucketName);
+                imageRepository.save(newImage);
+            } catch (IOException e) {
+                throw new RuntimeErrorException(null, "File" + uniqueName + "has not been saved");
+            }
+        });
     }
 
     public String createUniqueName(MultipartFile file) {
