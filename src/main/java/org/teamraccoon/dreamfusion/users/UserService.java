@@ -28,11 +28,9 @@ public class UserService {
     public User changePassword(UserDto userDto, Long id) throws Exception{
         User user = repository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        // encoderFacade.decode("base64", userDto.getPassword());
+        String passwordDecode = encoderFacade.decode("base64", userDto.getPassword());
         
-        user.setPassword(userDto.getPassword());
-        
-        String passwordEncode = encoderFacade.encode("bcrypt", userDto.getPassword());
+        String passwordEncode = encoderFacade.encode("bcrypt", passwordDecode);
         user.setPassword(passwordEncode);
 
         return repository.save(user);
