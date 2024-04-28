@@ -14,7 +14,8 @@ This is the backend side of the PrintGo online store project. For the full readm
 - AWS_BUCKET_NAME (your S3 bucket name),
 - AWS_SECRET_ACCESS_KEY (your S3 bucket secret access key),
 - STRIPE_SECRET_KEY (your Stripe secret key)
-3. Launch DreamfusionApplication.java
-4. Retry launch attempt if necessary.
+3. Take a look at the application.properties and change the active profile to whatever you need.
+4. Launch DreamfusionApplication.java
+5. Retry launch attempt if necessary.
 
 ## Enjoy!
